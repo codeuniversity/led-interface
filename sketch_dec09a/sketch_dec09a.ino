@@ -20,12 +20,13 @@ int lengthOfMotifs[3] = {11, 10, 9};
 int numberOfMotifs = 3;
 int currentMotif = 0;
 
+int oldState = 1;
 
 
 void setup() {
   turnOffLeds();
 
-  // pinMode(47, INPUT); // This is our input button
+  pinMode(47, INPUT); // This is our input button
 }
 
 
@@ -61,17 +62,14 @@ void nextMotif() {
 
 
 void loop() {
+  int bState = digitalRead(47);
   showMotif(motifs[currentMotif], lengthOfMotifs[currentMotif]);
-  delay(2000);
   turnOffLeds();
-  nextMotif();
 
-
-  // if (digitalRead(47) == LOW) {
-  //   buttonPressed = true;
-  // }
-  // if (buttonPressed){
-  //   nextMotif();
-  //   buttonPressed = false;
-  // }
+  if (bState != oldState && bState == LOW) {
+    nextMotif();
+    oldState = bState;
+  } else if (bState != oldState){
+    oldState = bState;
+  }
 }
